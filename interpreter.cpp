@@ -2,8 +2,39 @@
 #include <string>
 #include "interpreter.h"
 #include "storytokenizer.h"
-#include "passageitem.h"
 using namespace std;
+
+//Constructor
+Interpreter::Interpreter(string str)
+{
+  filename = str;
+
+  //Loads the contents of if.html into the interpreter member called "raw_story".
+  string raw_story;
+  ifstream story;
+  story.open(filename);
+
+  if(!story.is_open())
+  {
+    cout << "Unable to open file." << endl;
+    exit(0);
+  }
+
+  string line;
+  getline(story, line);
+  while ((story.good()) && (line != "</html>"))
+  {
+    raw_story += line + '\n';
+    getline(story, line);
+  }
+
+  //Puts all the passages into vector of PassageItems, so they can be accessed more easily.
+  StoryTokenizer st(raw_story);
+  while(st.hasNextPassage())
+  {
+    this->passages.push_back(st.nextPassage());
+  }
+}
 
 //This function starts the interpreter
 void Interpreter::start()
@@ -11,28 +42,18 @@ void Interpreter::start()
   int passIndex = 0;
   unsigned int selection;
   cout << "The Interpretor is starting" << endl;
-  
+
   cout << endl;
   string output_text;
 
   while(1)
   {
-    // PassageItem temp = passages.at(selection);
-    
-    // output_text = temp.getText();
-
     // while(selection < 1 || selection > passageItems.at(selection).number_of_selections())
     // {
     //   cout << "Invalid selection. Try again" << endl;
     //   cin >> selection;
     // }
     // cout << "\n\nYour choices: " << endl;
-
-    //If there are display_links at the end of the passage text, don't include that in the text....
-    // for(int i = output_text.length()-1; i > 0; i--)
-    // {
-
-    // }
 
     // for(unsigned int z = 0; z < passageItems.size(); z++)
     // {
@@ -44,7 +65,7 @@ void Interpreter::start()
     //   }
     // }
 
-    displayPassage(passIndex);    
+    displayPassage(passIndex);
     cout << "Your choice: ";
     cin >> selection;
     while(selection < 1 || selection > display_links.size())
@@ -53,31 +74,10 @@ void Interpreter::start()
       cin >> selection;
     }
     // Need to make something that takes the selection and turns it into the index in passages
-    
 
     display_links.clear();
     actual_links.clear();
-
   }
-
-  //debug make sure all passageitem variables are correct
-  // for(int i = 0; i < passageItems.size(); i++)
-  // {
-  //   cout << "Passage: " << i << endl;
-  //   cout << "Display display_links:" << endl;
-  //   passageItems.at(i).displayLinks();
-  //   cout << endl;
-  //
-  //   cout << "Text:" << endl;
-  //   passageItems.at(i).displayText();
-  //   cout << endl;
-  //
-  //   cout << "Number of selections:" << endl;
-  //   cout << passageItems.at(i).number_of_selections() << endl;
-  //   cout << endl;
-  //   cout << endl;
-  // }
-
 };
 
 void Interpreter::displayLinks()
@@ -118,21 +118,21 @@ void Interpreter::displayPassage(int n)
         if(text.find("true") != string::npos)
         {
           if(variables[name] == true)
-          { 
+          {
             displayNextBlock = true;
             ifbool = true;
           }
         }
         else
         {
-          if(variables[name] == false) 
+          if(variables[name] == false)
           {
             displayNextBlock = true;
             ifbool = true;
           }
         }
         break;
-      
+
       case ELSEIF:
         name = text.substr(9, text.find("is")-9);
         if(ifbool) break;
@@ -146,14 +146,14 @@ void Interpreter::displayPassage(int n)
         }
         else
         {
-          if(variables[name] == false) 
+          if(variables[name] == false)
           {
             displayNextBlock = true;
             ifbool = true;
           }
         }
         break;
-      
+
       case ELSE:
         if(ifbool) break;
         displayNextBlock = true;
@@ -168,7 +168,7 @@ void Interpreter::displayPassage(int n)
           cout << name << " ";
           name = text.substr(text.find(LINK_SEPARATOR), (text.find(LINK_END)-text.find(LINK_SEPARATOR)) );
           actual_links.push_back(name);
-          
+
         }
         else
         {
@@ -181,47 +181,9 @@ void Interpreter::displayPassage(int n)
 
       default:
         cout << " [ERROR] ";
-        break; 
-        
-      
-
-      
-      
-
+        break;
     }
   }
   cout << endl;
   displayLinks();
-}
-
-//Constructor
-Interpreter::Interpreter(string str)
-{
-  filename = str;
-
-  //Loads the contents of if.html into the interpreter member called "raw_story".
-  string raw_story;
-  ifstream story;
-  story.open(filename);
-
-  if(!story.is_open())
-  {
-    cout << "Unable to open file." << endl;
-    exit(0);
-  }
-
-  string line;
-  getline(story, line);
-  while ((story.good()) && (line != "</html>"))
-  {
-    raw_story += line + '\n';
-    getline(story, line);
-  }
-
-  //Puts all the passages into vector of PassageItems, so they can be accessed more easily.
-  StoryTokenizer st(raw_story);
-  while(st.hasNextPassage())
-  {
-    this->passages.push_back(st.nextPassage());
-  }
 }
