@@ -74,6 +74,7 @@ void Interpreter::start()
       cin >> selection;
     }
     // Need to make something that takes the selection and turns it into the index in passages
+    passIndex = selectionToIndex(selection-1);
 
     display_links.clear();
     actual_links.clear();
@@ -87,6 +88,14 @@ void Interpreter::displayLinks()
     cout << i+1 << ". " << display_links.at(i) << endl;
   }
 };
+
+int Interpreter::selectionToIndex(int n)
+{
+  int i = 0;
+  cout << "actual_links.at(n) : " << actual_links.at(n) << endl;
+  while(passages.at(i).getName() != actual_links.at(n)){cout << passages.at(i++).getName() << endl;}
+  return i;
+}
 
 void Interpreter::displayPassage(int n)
 {
