@@ -8,8 +8,8 @@ using namespace std;
 //This function starts the interpreter
 void Interpreter::start()
 {
-  int selection = 0;
-  un
+  int passIndex = 0;
+  unsigned int selection;
   cout << "The Interpretor is starting" << endl;
   
   cout << endl;
@@ -44,7 +44,7 @@ void Interpreter::start()
     //   }
     // }
 
-    displayPassage(selection);    
+    displayPassage(passIndex);    
     cout << "Your choice: ";
     cin >> selection;
     while(selection < 1 || selection > display_links.size())
@@ -53,7 +53,7 @@ void Interpreter::start()
       cin >> selection;
     }
     // Need to make something that takes the selection and turns it into the index in passages
-    selection = 
+    
 
     display_links.clear();
     actual_links.clear();
