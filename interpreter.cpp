@@ -211,6 +211,7 @@ void Interpreter::displayPassage(int n)
           actual_links.push_back(name);
         }
         break;
+<<<<<<< HEAD
       }
 
       case BLOCK:
@@ -221,6 +222,10 @@ void Interpreter::displayPassage(int n)
 
       case GOTO:
       {
+=======
+        
+      case GOTO:
+>>>>>>> 2a382f11e99396e80a97fc159fc37e6bb07fd6b1
         name = text.substr(text.find(GOTO_NAME_START)+6, text.find(GOTO_NAME_END) - text.find(GOTO_NAME_START)+6);
         cout << "Going to " << name << endl;
         gotobool = true;
@@ -228,8 +233,12 @@ void Interpreter::displayPassage(int n)
         display_links.clear();
         actual_links.clear();
         displayPassage(j);
+<<<<<<< HEAD
         break;
       }
+=======
+        break
+>>>>>>> 2a382f11e99396e80a97fc159fc37e6bb07fd6b1
 
       default:
       {
