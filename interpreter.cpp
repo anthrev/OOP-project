@@ -93,7 +93,7 @@ int Interpreter::selectionToIndex(int n)
 {
   int i = 0;
   cout << "actual_links.at(n) : " << actual_links.at(n) << endl;
-  while(passages.at(i).getName() != actual_links.at(n)){cout << passages.at(i++).getName() << endl;}
+  while(passages.at(i++).getName() != actual_links.at(n)){cout << passages.at(i++).getName() << endl;}
   return i;
 }
 
@@ -187,6 +187,16 @@ void Interpreter::displayPassage(int n)
           actual_links.push_back(name);
         }
         break;
+        
+      case GOTO:
+        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(GOTO_NAME_END) - text.find(GOTO_NAME_START)+6);
+        cout << "Going to " << name << endl;
+        gotobool = true;
+        while(passages.at(j++).getName() != name){}
+        display_links.clear();
+        actual_links.clear();
+        displayPassage(j);
+        break
 
       default:
         cout << " [ERROR] ";
