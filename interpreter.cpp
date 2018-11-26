@@ -102,7 +102,7 @@ void Interpreter::displayPassage(int n)
   PassageTokenizer ptok(passages.at(n).getText());
 
   bool ifbool, displayNextBlock, gotobool;
-  ifbool = displayNextBlock = goto = false;
+  ifbool = displayNextBlock = gotobool = false;
 
   while(ptok.hasNextSection())
   {
