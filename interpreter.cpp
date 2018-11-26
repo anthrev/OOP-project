@@ -109,6 +109,7 @@ void Interpreter::displayPassage(int n)
     SectionToken temp = ptok.nextSection();
     string name, text = temp.getText();
 
+    int j = 0;
 
     switch(temp.getType())
     {
