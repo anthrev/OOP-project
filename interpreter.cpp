@@ -101,8 +101,8 @@ void Interpreter::displayPassage(int n)
 {
   PassageTokenizer ptok(passages.at(n).getText());
 
-  bool ifbool, displayNextBlock; //gotobool;
-  ifbool = displayNextBlock = false;
+  bool ifbool, displayNextBlock, gotobool;
+  ifbool = displayNextBlock = goto = false;
 
   while(ptok.hasNextSection())
   {
@@ -264,7 +264,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
 
   PassageTokenizer ptok(stok.getText());
 
-  bool ifbool, displayNextBlock, gotobool;
+  bool ifbool, displayNextBlock; //gotobool;
   ifbool = displayNextBlock = false;
 
   while(ptok.hasNextSection())
