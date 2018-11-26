@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
   cout << "running interpreter..." << endl;
-  Interpreter story("test-example.html");
+  Interpreter story(".html");
   story.start();
   // story.start();
   return 0;

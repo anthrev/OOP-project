@@ -23,6 +23,7 @@ class Interpreter
     void start();
     void displayPassage(int);
     void displayLinks();
+    int selectionToIndex(int n);
 };
 
 #endif
