@@ -263,7 +263,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
 
   PassageTokenizer ptok(stok.getText());
 
-  bool ifbool, displayNextBlock; //gotobool;
+  bool ifbool, displayNextBlock, gotobool;
   ifbool = displayNextBlock = false;
 
   while(ptok.hasNextSection())
