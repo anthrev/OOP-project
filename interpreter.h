@@ -24,6 +24,7 @@ class Interpreter
     void displayPassage(int);
     void displayLinks();
     int selectionToIndex(int n);
+    void displayPassage_block(SectionToken stok);
 };
 
 #endif

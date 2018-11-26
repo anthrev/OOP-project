@@ -93,7 +93,7 @@ int Interpreter::selectionToIndex(int n)
 {
   int i = 0;
   cout << "actual_links.at(n) : " << actual_links.at(n) << endl;
-  while(passages.at(i).getName() != actual_links.at(n)){cout << passages.at(i++).getName() << endl;}
+  while(passages.at(i++).getName() != actual_links.at(n)){cout << passages.at(i++).getName() << endl;}
   return i;
 }
 
@@ -113,16 +113,34 @@ void Interpreter::displayPassage(int n)
     switch(temp.getType())
     {
       case TEXT:
+      {
         cout << text;
         break;
+      }
 
       case SET:
-        name = text.substr(5, text.find("to")-5);
-        if(text.find("true") != string::npos) variables[name] = true;
-        else variables[name] = false;
-        break;
+      {
+        string str = temp.getText();
+        for (int i = str.find ('$'); i < str.length(); i++)
+        {
+          if(str[i] == ' ')
+          {
+             name = str.substr (str.find ('$') + 1, i - str.find ('$') - 1);
+             if (str.find("true") != std::string::npos)
+             {
+                variables[name] = true;
+             }
+             else
+             {
+                variables[name] = false;
+             }
+             break;
+          }
+        }break;
+      }
 
       case IF:
+      {
         name = text.substr(4, text.find("is")-4);
         if(text.find("true") != string::npos)
         {
@@ -141,8 +159,10 @@ void Interpreter::displayPassage(int n)
           }
         }
         break;
+      }
 
       case ELSEIF:
+      {
         name = text.substr(9, text.find("is")-9);
         if(ifbool) break;
         if(text.find("true") != string::npos)
@@ -162,14 +182,18 @@ void Interpreter::displayPassage(int n)
           }
         }
         break;
+      }
 
       case ELSE:
+      {
         if(ifbool) break;
         displayNextBlock = true;
         break;
+      }
 
-      // still need to fix LINK and finish with the BLOCK and GOTO
+    // still need to fix LINK and finish with the BLOCK and GOTO
       case LINK:
+      {
         if(text.find(LINK_SEPARATOR) != string::npos)
         {
           name = text.substr(2, text.find(LINK_SEPARATOR)-2);
@@ -187,12 +211,204 @@ void Interpreter::displayPassage(int n)
           actual_links.push_back(name);
         }
         break;
+      }
+
+      case BLOCK:
+      {
+        displayPassage_block(temp);
+        break;
+      }
+
+      case GOTO:
+      {
+        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(GOTO_NAME_END) - text.find(GOTO_NAME_START)+6);
+        cout << "Going to " << name << endl;
+        gotobool = true;
+        while(passages.at(j++).getName() != name){}
+        display_links.clear();
+        actual_links.clear();
+        displayPassage(j);
+        break;
+      }
 
       default:
+      {
         cout << " [ERROR] ";
         break;
+      }
     }
   }
   cout << endl;
   displayLinks();
+
+  cout << "---MAP VALUES---" << endl;
+  //display values in map for debugging
+  for (std::pair<std::string, bool> element : variables)
+  {
+     std::cout << element.first << " :: " << element.second << std::endl;
+  }
+  cout << endl << endl;
+}
+
+void Interpreter::displayPassage_block(SectionToken stok)
+{
+  cout << "---MAP VALUES---" << endl;
+  //display values in map for debugging
+  for (std::pair<std::string, bool> element : variables)
+  {
+	   std::cout << element.first << " :: " << element.second << std::endl;
+  }
+  cout << endl << endl;
+
+
+  PassageTokenizer ptok(stok.getText());
+
+  bool ifbool, displayNextBlock; //gotobool;
+  ifbool = displayNextBlock = false;
+
+  while(ptok.hasNextSection())
+  {
+    SectionToken temp = ptok.nextSection();
+    string name, text = temp.getText();
+
+
+    switch(temp.getType())
+    {
+      case TEXT:
+      {
+        cout << text;
+        break;
+      }
+
+      case SET:
+      {
+        string str = temp.getText();
+        for (int i = str.find ('$'); i < str.length(); i++)
+        {
+          if(str[i] == ' ')
+          {
+             name = str.substr (str.find ('$') + 1, i - str.find ('$') - 1);
+             if (str.find("true") != std::string::npos)
+             {
+                variables[name] = true;
+             }
+             else
+             {
+                variables[name] = false;
+             }
+             break;
+          }
+        }break;
+      }
+
+      case IF:
+      {
+        name = text.substr(4, text.find("is")-4);
+        if(text.find("true") != string::npos)
+        {
+          if(variables[name] == true)
+          {
+            displayNextBlock = true;
+            ifbool = true;
+          }
+        }
+        else
+        {
+          if(variables[name] == false)
+          {
+            displayNextBlock = true;
+            ifbool = true;
+          }
+        }
+        break;
+      }
+
+      case ELSEIF:
+      {
+        name = text.substr(9, text.find("is")-9);
+        if(ifbool) break;
+        if(text.find("true") != string::npos)
+        {
+          if(variables[name] == true)
+          {
+            displayNextBlock = true;
+            ifbool = true;
+          }
+        }
+        else
+        {
+          if(variables[name] == false)
+          {
+            displayNextBlock = true;
+            ifbool = true;
+          }
+        }
+        break;
+      }
+
+      case ELSE:
+      {
+        if(ifbool) break;
+        displayNextBlock = true;
+        break;
+      }
+
+      // still need to fix LINK and finish with the BLOCK and GOTO
+      case LINK:
+      {
+        if(text.find(LINK_SEPARATOR) != string::npos)
+        {
+          name = text.substr(2, text.find(LINK_SEPARATOR)-2);
+          display_links.push_back(name);
+          cout << name << " ";
+          name = text.substr(text.find(LINK_SEPARATOR), (text.find(LINK_END)-text.find(LINK_SEPARATOR)) );
+          actual_links.push_back(name);
+
+        }
+        else
+        {
+          name = text.substr(2, text.find(LINK_END)-2);
+          cout << name << " ";
+          display_links.push_back(name);
+          actual_links.push_back(name);
+        }
+        break;
+      }
+
+      case BLOCK:
+      {
+        if(ptok.hasNextSection())
+        {
+          displayPassage_block(ptok.nextSection());
+          break;
+        };
+      }
+
+      case GOTO:
+      {
+        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(GOTO_NAME_END) - text.find(GOTO_NAME_START)+6);
+        cout << "Going to " << name << endl;
+        gotobool = true;
+        while(passages.at(j++).getName() != name){}
+        display_links.clear();
+        actual_links.clear();
+        displayPassage(j);
+        break;
+      }
+
+      default:
+      {
+        cout << " [ERROR] ";
+        break;
+      }
+    }
+  }
+
+  cout << "---MAP VALUES---" << endl;
+  //display values in map for debugging
+  for (std::pair<std::string, bool> element : variables)
+  {
+     std::cout << element.first << " :: " << element.second << std::endl;
+  }
+  cout << endl << endl;
 }
