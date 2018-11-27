@@ -1,5 +1,6 @@
 #include <fstream>
 #include <string>
+#include <limits>
 #include "interpreter.h"
 #include "storytokenizer.h"
 using namespace std;
