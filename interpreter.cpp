@@ -18,6 +18,7 @@ void Interpreter::start()
   while(1)
   {
     // cout << " About to display passage..." << endl;
+    cout << endl;
     displayPassage(passIndex);
 
     if(display_links.size() == 0) break;
