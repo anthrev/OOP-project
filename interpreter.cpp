@@ -14,7 +14,7 @@ void Interpreter::start()
   cout << endl;
   string output_text;
 
-  while(1)
+while(1)
   {
     // cout << " About to display passage..." << endl;
     cout << endl;
@@ -24,12 +24,15 @@ void Interpreter::start()
 
     cout << "Your choice: ";
     cin >> selection;
-    while(selection < 1 || selection > display_links.size())
+    while(cin.fail() || selection < 1 || selection > display_links.size())
     {
+
       cout << "Invalid choice" << endl << "Try Again: ";
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cin >> selection;
     }
-    
+
     passIndex = selectionToIndex(selection-1);
 
     display_links.clear();
