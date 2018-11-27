@@ -219,13 +219,13 @@ void Interpreter::displayPassage(int n)
     }
     if(gotobool) break;
   }
-  cout << endl << "---MAP VALUES---" << endl;
-  //display values in map for debugging
-  for (std::pair<std::string, bool> element : variables)
-  {
-	   std::cout << element.first << " :: " << element.second << std::endl;
-  }
-  cout << endl;
+//   cout << endl << "---MAP VALUES---" << endl;
+//   //display values in map for debugging
+//   for (std::pair<std::string, bool> element : variables)
+//   {
+// 	   std::cout << element.first << " :: " << element.second << std::endl;
+//   }
+//   cout << endl;
   if(!gotobool)
   {
     cout << endl;
