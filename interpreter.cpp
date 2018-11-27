@@ -167,7 +167,7 @@ void Interpreter::displayPassage(int n)
           name = text.substr(2, text.find(LINK_SEPARATOR)-2);
           display_links.push_back(name);
           cout << name << " ";
-          name = text.substr(text.find(LINK_SEPARATOR), (text.find(LINK_END)-text.find(LINK_SEPARATOR)) );
+          name = text.substr(text.find(LINK_SEPARATOR)+5, (text.find(LINK_END)-text.find(LINK_SEPARATOR))-5 );
           actual_links.push_back(name);
           
         }
@@ -369,7 +369,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
           name = text.substr(2, text.find(LINK_SEPARATOR)-2);
           display_links.push_back(name);
           cout << name << " ";
-          name = text.substr(text.find(LINK_SEPARATOR), (text.find(LINK_END)-text.find(LINK_SEPARATOR)) );
+          name = text.substr(text.find(LINK_SEPARATOR)+5, (text.find(LINK_END)-text.find(LINK_SEPARATOR))-5 );
           actual_links.push_back(name);
 
         }
