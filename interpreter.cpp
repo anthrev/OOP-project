@@ -2,7 +2,6 @@
 #include <string>
 #include "interpreter.h"
 #include "storytokenizer.h"
-#include "passageitem.h"
 using namespace std;
 
 //This function starts the interpreter
