@@ -183,13 +183,13 @@ void Interpreter::displayPassage(int n)
 
       case GOTO:
       {
-        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(GOTO_NAME_END) - text.find(GOTO_NAME_START)+6);
+        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(COMMAND_END) - text.find(GOTO_NAME_START)-12);
         // cout << "Going to " << name << endl;
         gotobool = true;
         while(passages.at(j++).getName() != name){}
         display_links.clear();
         actual_links.clear();
-        displayPassage(j);
+        displayPassage(j-1);
         break;
       }
 
@@ -394,13 +394,13 @@ void Interpreter::displayPassage_block(SectionToken stok)
 
       case GOTO:
       {
-        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(GOTO_NAME_END) - text.find(GOTO_NAME_START)+6);
+        name = text.substr(text.find(GOTO_NAME_START)+6, text.find(COMMAND_END) - text.find(GOTO_NAME_START)-12);
         // cout << "Going to " << name << endl;
         gotobool = true;
         while(passages.at(j++).getName() != name){}
         display_links.clear();
         actual_links.clear();
-        displayPassage(j);
+        displayPassage(j-1);
         break;
       }
 
