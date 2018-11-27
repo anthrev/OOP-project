@@ -96,6 +96,7 @@ void Interpreter::displayPassage(int n)
 
       case IF:
       {
+	ifbool = false;
         name =  text.substr(text.find('$'), text.find("is") - text.find('$') - 1);
         // cout << '[' << name << ']' << endl;
         if(name[name.size()-1] == ' ') name.pop_back();
@@ -292,6 +293,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
 
       case IF:
       {
+	ifbool = false;
         name =  text.substr(text.find('$'), text.find("is") - text.find('$'));
         if(name[name.size()-1] == ' ') name.pop_back();
         // cout << "[" <<  name << "]"<< endl;
