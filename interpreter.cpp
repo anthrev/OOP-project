@@ -86,12 +86,12 @@ void Interpreter::displayPassage(int n)
              if (str.find("true") != std::string::npos)
              {
                 variables[name] = true;
-                cout << "Set " << name << " to true" << endl;
+//                 cout << "Set " << name << " to true" << endl;
              }
              else
              {
                 variables[name] = false;
-                cout << "Set " << name << " to false" << endl;
+//                 cout << "Set " << name << " to false" << endl;
              }
              break;
           }
