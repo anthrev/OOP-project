@@ -17,33 +17,6 @@ void Interpreter::start()
 
   while(1)
   {
-    // PassageItem temp = passages.at(selection);
-    
-    // output_text = temp.getText();
-
-    // while(selection < 1 || selection > passageItems.at(selection).number_of_selections())
-    // {
-    //   cout << "Invalid selection. Try again" << endl;
-    //   cin >> selection;
-    // }
-    // cout << "\n\nYour choices: " << endl;
-
-    //If there are display_links at the end of the passage text, don't include that in the text....
-    // for(int i = output_text.length()-1; i > 0; i--)
-    // {
-
-    // }
-
-    // for(unsigned int z = 0; z < passageItems.size(); z++)
-    // {
-    //   if(passageItems.at(z).getName() == temp.getLinkAtIndex(selection-1))
-    //   {
-    //     passageItems.at(z).displayText();
-    //     cout << output_text << endl;
-    //     break;
-    //   }
-    // }
-
     // cout << " About to display passage..." << endl;
     displayPassage(passIndex);
 
@@ -63,25 +36,6 @@ void Interpreter::start()
     actual_links.clear();
 
   }
-
-  //debug make sure all passageitem variables are correct
-  // for(int i = 0; i < passageItems.size(); i++)
-  // {
-  //   cout << "Passage: " << i << endl;
-  //   cout << "Display display_links:" << endl;
-  //   passageItems.at(i).displayLinks();
-  //   cout << endl;
-  //
-  //   cout << "Text:" << endl;
-  //   passageItems.at(i).displayText();
-  //   cout << endl;
-  //
-  //   cout << "Number of selections:" << endl;
-  //   cout << passageItems.at(i).number_of_selections() << endl;
-  //   cout << endl;
-  //   cout << endl;
-  // }
-
 };
 
 void Interpreter::displayLinks()
