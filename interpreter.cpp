@@ -227,7 +227,7 @@ void Interpreter::displayPassage(int n)
 
   if(!gotoBool)
   {
-    cout << endl;
+    cout << endl << endl;
     // cout << "Calling diaplyLinks()..." << endl;
     displayLinks();
   }
