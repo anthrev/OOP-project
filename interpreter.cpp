@@ -11,7 +11,7 @@ void Interpreter::start()
   int passIndex = 0;
   unsigned int selection;
   cout << "The Interpretor is starting" << endl;
-  
+
   cout << endl;
   string output_text;
 
@@ -59,12 +59,12 @@ void Interpreter::displayPassage(int n)
   // cout << "Displaying passage..." << endl;
   while(ptok.hasNextSection())
   {
-    
+
     SectionToken temp = ptok.nextSection();
     string name, text = temp.getText();
 
     // cout << text << endl;
-    
+
     int j = 0;
 
     switch(temp.getType())
@@ -86,12 +86,12 @@ void Interpreter::displayPassage(int n)
              if (str.find("true") != std::string::npos)
              {
                 variables[name] = true;
-//                 cout << "Set " << name << " to true" << endl;
+                // cout << "Set " << name << " to true" << endl;
              }
              else
              {
                 variables[name] = false;
-//                 cout << "Set " << name << " to false" << endl;
+                // cout << "Set " << name << " to false" << endl;
              }
              break;
           }
@@ -100,21 +100,30 @@ void Interpreter::displayPassage(int n)
 
       case IF:
       {
-	ifbool = false;
-        name =  text.substr(text.find('$'), text.find("is") - text.find('$') - 1);
-        // cout << '[' << name << ']' << endl;
+	       ifbool = false;
+
+         for(unsigned int i = text.find ('$'); i < text.length(); i++)
+         {
+           if(text[i] == ' ')
+           {
+             name = text.substr(text.find ('$'), i - text.find ('$'));
+             break;
+           }
+         }
+
+         // cout << '[' << name << ']' << endl;
         if(name[name.size()-1] == ' ') name.pop_back();
         if(text.find("true") != string::npos)
         {
           if(variables[name] == true)
-          { 
+          {
             displayNextBlock = true;
             ifbool = true;
           }
         }
         else
         {
-          if(variables[name] == false) 
+          if(variables[name] == false)
           {
             displayNextBlock = true;
             ifbool = true;
@@ -122,7 +131,7 @@ void Interpreter::displayPassage(int n)
         }
         break;
       }
-      
+
       case ELSEIF:
       {
         name =  text.substr(text.find('$'), text.find("is") - text.find('$') - 1);
@@ -143,7 +152,7 @@ void Interpreter::displayPassage(int n)
         }
         else
         {
-          if(variables[name] == false) 
+          if(variables[name] == false)
           {
             displayNextBlock = true;
             ifbool = true;
@@ -151,7 +160,7 @@ void Interpreter::displayPassage(int n)
         }
         break;
       }
-      
+
       case ELSE:
       {
         if(ifbool)
@@ -163,7 +172,6 @@ void Interpreter::displayPassage(int n)
         break;
       }
 
-      // still need to fix LINK and finish with the BLOCK and GOTO
       case LINK:
       {
         if(text.find(LINK_SEPARATOR) != string::npos)
@@ -173,7 +181,7 @@ void Interpreter::displayPassage(int n)
           cout << name << " ";
           name = text.substr(text.find(LINK_SEPARATOR)+5, (text.find(LINK_END)-text.find(LINK_SEPARATOR))-5 );
           actual_links.push_back(name);
-          
+
         }
         else
         {
@@ -203,32 +211,24 @@ void Interpreter::displayPassage(int n)
         {
           displayPassage_block(temp);
         }
+        displayNextBlock = false;
         break;
       }
-        
-      
 
       default:
       {
         // cout << temp.getText() << endl;
         cout << " [ERROR] ";
         break;
-      } 
-        
-
+      }
     }
     if(gotobool) break;
   }
-//   cout << endl << "---MAP VALUES---" << endl;
-//   //display values in map for debugging
-//   for (std::pair<std::string, bool> element : variables)
-//   {
-// 	   std::cout << element.first << " :: " << element.second << std::endl;
-//   }
-//   cout << endl;
+
   if(!gotobool)
   {
     cout << endl;
+    // cout << "Calling diaplyLinks()..." << endl;
     displayLinks();
   }
 }
@@ -281,14 +281,16 @@ void Interpreter::displayPassage_block(SectionToken stok)
         {
           if(str[i] == ' ')
           {
-             name = str.substr (str.find ('$') + 1, i - str.find ('$') - 2);
+             name = str.substr (str.find ('$'), i - str.find ('$'));
              if (str.find("true") != std::string::npos)
              {
                 variables[name] = true;
+                // cout << "Set " << name << " to true" << endl;
              }
              else
              {
                 variables[name] = false;
+                // cout << "Set " << name << " to false" << endl;
              }
              break;
           }
@@ -298,7 +300,16 @@ void Interpreter::displayPassage_block(SectionToken stok)
       case IF:
       {
 	ifbool = false;
-        name =  text.substr(text.find('$'), text.find("is") - text.find('$'));
+
+        for (unsigned int i = str.find ('$'); i < str.length(); i++)
+        {
+          if(str[i] == ' ')
+          {
+             name = text.substr(text.find ('$'), i - text.find ('$'));
+             break;
+          }
+        }
+
         if(name[name.size()-1] == ' ') name.pop_back();
         // cout << "[" <<  name << "]"<< endl;
         if(text.find("true") != string::npos)
@@ -365,7 +376,6 @@ void Interpreter::displayPassage_block(SectionToken stok)
         break;
       }
 
-      // still need to fix LINK and finish with the BLOCK and GOTO
       case LINK:
       {
         if(text.find(LINK_SEPARATOR) != string::npos)
@@ -393,6 +403,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
         {
           displayPassage_block(temp);
         }
+        displayNextBlock = false;
         break;
       }
 
@@ -415,6 +426,13 @@ void Interpreter::displayPassage_block(SectionToken stok)
         break;
       }
     }
+    if(!gotobool)
+    {
+      cout << endl;
+      // cout << "Calling diaplyLinks()..." << endl;
+      displayLinks();
+    }
+    if(gotobool) break;
   }
 
   // cout << endl << "---MAP VALUES---" << endl;
@@ -458,4 +476,3 @@ Interpreter::Interpreter(string str)
     this->passages.push_back(st.nextPassage());
   }
 }
-
