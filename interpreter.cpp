@@ -55,7 +55,7 @@ void Interpreter::displayPassage(int n)
   PassageTokenizer ptok(passages.at(n).getText());
 
   bool ifbool, displayNextBlock;
-  ifbool = displayNextBlock = gotobool = false;
+  ifbool = displayNextBlock = gotoBool = false;
   // cout << "Displaying passage..." << endl;
   while(ptok.hasNextSection())
   {
@@ -201,7 +201,7 @@ void Interpreter::displayPassage(int n)
         display_links.clear();
         actual_links.clear();
         displayPassage(j-1);
-        gotobool = true;
+        gotoBool = true;
         break;
       }
 
@@ -222,10 +222,10 @@ void Interpreter::displayPassage(int n)
         break;
       }
     }
-    if(gotobool) break;
+    if(gotoBool) break;
   }
 
-  if(!gotobool)
+  if(!gotoBool)
   {
     cout << endl;
     // cout << "Calling diaplyLinks()..." << endl;
@@ -415,7 +415,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
         display_links.clear();
         actual_links.clear();
         displayPassage(j-1);
-	gotobool = true;
+	gotoBool = true;
         break;
       }
 
@@ -426,14 +426,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
         break;
       }
     }
-    if(!gotobool)
-    {
-      cout << endl;
-      // cout << "Calling diaplyLinks()..." << endl;
-      displayLinks();
-    }
-    if(gotobool) break;
-  }
+
 
   // cout << endl << "---MAP VALUES---" << endl;
   // //display values in map for debugging
