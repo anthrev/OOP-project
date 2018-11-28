@@ -54,7 +54,7 @@ void Interpreter::displayPassage(int n)
 {
   PassageTokenizer ptok(passages.at(n).getText());
 
-  bool ifbool, displayNextBlock, gotobool;
+  bool ifbool, displayNextBlock;
   ifbool = displayNextBlock = gotobool = false;
   // cout << "Displaying passage..." << endl;
   while(ptok.hasNextSection())
@@ -197,11 +197,11 @@ void Interpreter::displayPassage(int n)
       {
         name = text.substr(text.find(GOTO_NAME_START)+6, text.find(COMMAND_END) - text.find(GOTO_NAME_START)-12);
         // cout << "Going to " << name << endl;
-        gotobool = true;
         while(passages.at(j++).getName() != name){}
         display_links.clear();
         actual_links.clear();
         displayPassage(j-1);
+        gotobool = true;
         break;
       }
 
@@ -255,7 +255,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
   string str = stok.getText();
   PassageTokenizer ptok(str.substr(1, str.length()-2));
 
-  bool ifbool, displayNextBlock, gotobool;
+  bool ifbool, displayNextBlock;
   ifbool = displayNextBlock = gotobool = false;
 
   while(ptok.hasNextSection())
@@ -411,11 +411,11 @@ void Interpreter::displayPassage_block(SectionToken stok)
       {
         name = text.substr(text.find(GOTO_NAME_START)+6, text.find(COMMAND_END) - text.find(GOTO_NAME_START)-12);
         // cout << "Going to " << name << endl;
-        gotobool = true;
         while(passages.at(j++).getName() != name){}
         display_links.clear();
         actual_links.clear();
         displayPassage(j-1);
+	gotobool = true;
         break;
       }
 
