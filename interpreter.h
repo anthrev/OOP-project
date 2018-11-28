@@ -12,7 +12,7 @@ using namespace std;
 class Interpreter
 {
   private:
-    bool gotobool;
+    bool gotoBool;
     string filename;
     vector<PassageToken> passages;
     vector<string> display_links;
