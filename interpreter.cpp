@@ -256,7 +256,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
   PassageTokenizer ptok(str.substr(1, str.length()-2));
 
   bool ifbool, displayNextBlock;
-  ifbool = displayNextBlock = gotobool = false;
+  ifbool = displayNextBlock = gotoBool = false;
 
   while(ptok.hasNextSection())
   {
@@ -426,7 +426,7 @@ void Interpreter::displayPassage_block(SectionToken stok)
         break;
       }
     }
-
+  }
 
   // cout << endl << "---MAP VALUES---" << endl;
   // //display values in map for debugging
