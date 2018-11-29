@@ -5,6 +5,40 @@
 #include "storytokenizer.h"
 using namespace std;
 
+
+//Constructor
+Interpreter::Interpreter(string str)
+{
+  filename = str;
+
+  //Loads the contents of if.html into the interpreter member called "raw_story".
+  string raw_story;
+  ifstream story;
+  story.open(filename);
+
+  if(!story.is_open())
+  {
+    cout << "Unable to open file." << endl;
+    exit(0);
+  }
+
+  string line;
+  getline(story, line);
+  while ((story.good()) && (line != "</html>"))
+  {
+    raw_story += line + '\n';
+    getline(story, line);
+  }
+
+  //Puts all the passages into vector of PassageItems, so they can be accessed more easily.
+  StoryTokenizer st(raw_story);
+  while(st.hasNextPassage())
+  {
+    this->passages.push_back(st.nextPassage());
+  }
+}
+
+
 //This function starts the interpreter
 void Interpreter::start()
 {
@@ -435,37 +469,4 @@ void Interpreter::displayPassage_block(SectionToken stok)
   //    std::cout << element.first << " :: " << element.second << std::endl;
   // }
   // cout << endl << endl;
-}
-
-
-//Constructor
-Interpreter::Interpreter(string str)
-{
-  filename = str;
-
-  //Loads the contents of if.html into the interpreter member called "raw_story".
-  string raw_story;
-  ifstream story;
-  story.open(filename);
-
-  if(!story.is_open())
-  {
-    cout << "Unable to open file." << endl;
-    exit(0);
-  }
-
-  string line;
-  getline(story, line);
-  while ((story.good()) && (line != "</html>"))
-  {
-    raw_story += line + '\n';
-    getline(story, line);
-  }
-
-  //Puts all the passages into vector of PassageItems, so they can be accessed more easily.
-  StoryTokenizer st(raw_story);
-  while(st.hasNextPassage())
-  {
-    this->passages.push_back(st.nextPassage());
-  }
 }
