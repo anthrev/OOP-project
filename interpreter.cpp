@@ -42,6 +42,12 @@ Interpreter::Interpreter(string str)
 //This function starts the interpreter
 void Interpreter::start()
 {
+  if(filename == "")
+  {
+    cout << "Interpreter object created without an IF html source." << endl;
+    exit(1);
+  }
+
   int passIndex = 0;
   unsigned int selection;
   cout << "The Interpretor is starting" << endl;
